@@ -1,73 +1,25 @@
-
-from abc import ABC, abstractmethod
-
-
-# Employee Interface
-class EmployeeInterface(ABC):
-
-    @abstractmethod
-    def add_employee(
-        self,
-        employee_id: int,
-        name: str,
-        age: int,
-        position: str
-    ) -> bool:
-        pass
+from employee import Admin, Manager
+from interfaces import EmployeeInterface
 
 
-# Admin Class
-class Admin(EmployeeInterface):
-
-    def add_employee(
-        self,
-        employee_id: int,
-        name: str,
-        age: int,
-        position: str
-    ) -> bool:
-
-        if employee_id <= 0 or not name or age <= 0 or not position:
-            return False
-
-        print("\nAdmin Added Employee")
-        print(f"Employee ID: {employee_id}")
-        print(f"Name: {name}")
-        print(f"Age: {age}")
-        print(f"Position: {position}")
-
-        return True
+def delete_with_role(role: EmployeeInterface, employee_id: int) -> None:
+    result = role.delete_employee(employee_id)
+    print("Deleted:", result)
 
 
-# Manager Class
-class Manager(EmployeeInterface):
+def main() -> None:
+    employees: dict = {}
+    admin = Admin(employees)
+    manager = Manager(employees)
 
-    def add_employee(
-        self,
-        employee_id: int,
-        name: str,
-        age: int,
-        position: str
-    ) -> bool:
+    admin.add_employee(101, "Ahmed", 23, "Developer")
+    manager.add_employee(102, "Hasan", 28, "Engineer")
+    manager.add_employee(101, "Karim", 30, "Tester")
+    admin.add_employee(0, "Invalid", 25, "QA")
 
-        if employee_id <= 0 or not name or age <= 0 or not position:
-            return False
-
-        print("\nManager Added Employee")
-        print(f"Employee ID: {employee_id}")
-        print(f"Name: {name}")
-        print(f"Age: {age}")
-        print(f"Position: {position}")
-
-        return True
+    for role in (manager, admin):
+        delete_with_role(role, 102)
 
 
-# Create Objects
-admin = Admin()
-manager = Manager()
-
-
-# Call Methods
-print(admin.add_employee(101, "Ahmed", 23, "Developer"))
-
-print(manager.add_employee(102, "Rahim", 25, "Designer"))
+if __name__ == "__main__":
+    main()
