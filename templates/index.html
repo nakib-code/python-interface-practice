@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="{{ url_for('index') }}" class="brand">Employee Manager</a>
+            <nav class="nav-links">
+                <a href="{{ url_for('index') }}" class="nav-link active">All Employees</a>
+                <a href="{{ url_for('add_employee') }}" class="btn btn-primary">+ Add Employee</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-list">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="page-header">
+            <div>
+                <h1>Team Directory</h1>
+                <p class="subtitle">Manage employees powered by Python OOP Inheritance (<code>Employee</code>, <code>Manager</code>, <code>Developer</code>).</p>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Total Employees</span>
+                <span class="stat-value">{{ total_count }}</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Managers</span>
+                <span class="stat-value">{{ manager_count }}</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Developers</span>
+                <span class="stat-value">{{ developer_count }}</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>All Employees</h2>
+            </div>
+
+            {% if employees %}
+                <div class="table-wrapper">
+                    <table class="employee-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Salary</th>
+                                <th>Details (<code>show_details()</code>)</th>
+                                <th class="actions-col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in employees %}
+                                <tr>
+                                    <td class="emp-name">{{ employee.name }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ employee.role | lower }}">
+                                            {{ employee.role }}
+                                        </span>
+                                    </td>
+                                    <td class="emp-salary">{{ employee.format_salary() }}</td>
+                                    <td class="emp-details">{{ employee.show_details() }}</td>
+                                    <td class="actions-col">
+                                        <form
+                                            action="{{ url_for('delete_employee', employee_id=employee.id) }}"
+                                            method="POST"
+                                            data-name="{{ employee.name }}"
+                                            onsubmit="return confirm('Delete ' + this.dataset.name + '?');"
+                                        >
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No employees added yet.</p>
+                    <a href="{{ url_for('add_employee') }}" class="btn btn-primary">Add Your First Employee</a>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

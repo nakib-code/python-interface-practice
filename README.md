@@ -1,43 +1,64 @@
-# Employee Management System
+# Employee Management System (Python OOP Inheritance + Flask)
 
-A small Python project demonstrating **Interfaces** and **OOP concepts** using an Employee Management System.
+A simple, beginner-friendly full-stack Employee Management System built with **Python Flask**, **SQLite**, **Jinja2**, **HTML**, and **CSS**. Its main goal is to demonstrate **Inheritance in Python OOP** in a working web application.
+
+## OOP Inheritance Concepts Demonstrated
+
+All OOP logic lives in `models.py` and is used directly by `database.py`, `main.py`, and `templates/index.html`:
+
+1. **Class Inheritance**: `Manager(Employee)` and `Developer(Employee)` inherit attributes (`id`, `name`, `salary`) and methods from the parent `Employee` class.
+2. **Method Inheritance**: Both `Manager` and `Developer` inherit `format_salary()` directly from `Employee` without redefining it.
+3. **Method Overriding**: Both `Manager` and `Developer` override `show_details()` (using `super().show_details()`) to provide role-specific descriptions displayed on the home page.
 
 ## Project Structure
 
 ```text
 python/
-├── interfaces.py   # EmployeeInterface (ABC)
-├── employee.py     # Admin and Manager classes
-├── main.py         # Demo script
-└── README.md       # Project explanation
+├── main.py
+├── models.py
+├── database.py
+├── templates/
+│   ├── index.html
+│   └── add_employee.html
+├── static/
+│   └── style.css
+├── requirements.txt
+└── README.md
 ```
 
-## OOP Concepts Demonstrated
+## Features
 
-- **Abstraction:** `EmployeeInterface` uses `ABC` and `@abstractmethod` to define `add_employee()` and `delete_employee()`.
-- **Inheritance:** `Admin` and `Manager` both inherit from `EmployeeInterface`.
-- **Method Overriding:** `Admin` allows deleting employees, while `Manager` denies deletion.
-- **Polymorphism:** `delete_with_role(role: EmployeeInterface, employee_id: int)` works with any `EmployeeInterface` object (`Admin` or `Manager`).
+- View all employees with role summary cards (Total, Managers, Developers)
+- Add a new employee (`Manager` or `Developer`) with form validation
+- Delete an employee record
+- Persist records in SQLite (`employees.db` is created automatically on first run)
+- Clear success and error flash messages
 
-## How to Run
+## Installation & Run Instructions
 
-```bash
-python3 main.py
-```
+1. Navigate to the project directory:
+   ```bash
+   cd /Users/macbookair/project/python
+   ```
 
-## Example Output
+2. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+   *(On Windows: `venv\Scripts\activate`)*
 
-```text
-Admin added employee: Ahmed (ID: 101)
-Manager added employee: Hasan (ID: 102)
-Manager failed to add employee: ID 101 already exists.
-Admin failed to add employee: invalid data.
-Permission denied: Manager cannot delete employee ID 102.
-Deleted: False
-Admin deleted employee ID: 102
-Deleted: True
-```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Author
+4. Run the application:
+   ```bash
+   python3 main.py
+   ```
 
-**Ahmed Nakib**
+5. Open your browser and visit:
+   ```text
+   http://127.0.0.1:5000
+   ```
